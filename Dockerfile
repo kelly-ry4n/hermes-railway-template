@@ -16,11 +16,15 @@ RUN [ -x /opt/hermes/.venv/bin/hermes ] && ln -sf /opt/hermes/.venv/bin/hermes /
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /opt/hermes-railway/entrypoint.sh
-RUN chmod +x /opt/hermes-railway/entrypoint.sh
+COPY init.sh /opt/hermes-railway/init.sh
+RUN chmod +x /opt/hermes-railway/entrypoint.sh /opt/hermes-railway/init.sh
 
-ENV GATEWAY_HEALTH_URL=http://localhost:8642 \
+ENV HERMES_HOME=/data/hermes \
+    HOME=/data/hermes \
+    GATEWAY_HEALTH_URL=http://localhost:8642 \
     PORT=8080
 
 EXPOSE 8080
 
+ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/opt/hermes-railway/init.sh"]
 CMD ["/opt/hermes-railway/entrypoint.sh"]
