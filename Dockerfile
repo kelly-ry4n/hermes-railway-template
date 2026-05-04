@@ -12,7 +12,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && echo 'inoremap jj <Esc>' >> /etc/vim/vimrc
 
-RUN HERMES_BIN="$(command -v hermes)" && ln -sf "$HERMES_BIN" /usr/local/bin/hermes
+RUN [ -x /opt/hermes/.venv/bin/hermes ] && ln -sf /opt/hermes/.venv/bin/hermes /usr/local/bin/hermes
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /opt/hermes-railway/entrypoint.sh
