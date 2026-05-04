@@ -1,9 +1,20 @@
 FROM nousresearch/hermes-agent:v2026.4.30
 
+USER root
+
+ARG CADDY_VERSION=2.11.2
+RUN curl -fsSL "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_amd64.tar.gz" \
+      | tar -xz -C /usr/local/bin caddy \
+ && chmod +x /usr/local/bin/caddy
+
+COPY Caddyfile /etc/caddy/Caddyfile
+COPY entrypoint.sh /opt/hermes-railway/entrypoint.sh
+RUN chmod +x /opt/hermes-railway/entrypoint.sh
+
 ENV HERMES_HOME=/data \
     GATEWAY_HEALTH_URL=http://localhost:8642 \
     PORT=8080
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "hermes gateway run & sleep 3 && exec hermes dashboard --host 0.0.0.0 --port ${PORT} --insecure"]
+CMD ["/opt/hermes-railway/entrypoint.sh"]
