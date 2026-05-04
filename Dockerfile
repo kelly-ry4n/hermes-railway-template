@@ -7,6 +7,11 @@ RUN curl -fsSL "https://github.com/caddyserver/caddy/releases/download/v${CADDY_
       | tar -xz -C /usr/local/bin caddy \
  && chmod +x /usr/local/bin/caddy
 
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends vim \
+ && rm -rf /var/lib/apt/lists/* \
+ && echo 'inoremap jj <Esc>' >> /etc/vim/vimrc
+
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /opt/hermes-railway/entrypoint.sh
 RUN chmod +x /opt/hermes-railway/entrypoint.sh
