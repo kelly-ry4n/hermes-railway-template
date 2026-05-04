@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 if [ -z "${DASHBOARD_PASSWORD}" ] && [ -z "${DASHBOARD_PASSWORD_HASH}" ]; then
@@ -18,4 +18,13 @@ hermes dashboard --port 9119 &
 
 sleep 3
 
-exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+
+# Exit as soon as any child dies so Railway's restart policy reboots
+# the whole container — otherwise the gateway can crash silently while
+# Caddy keeps answering healthchecks.
+wait -n
+EXIT=$?
+echo "child process exited with $EXIT — terminating container" >&2
+[ "$EXIT" -eq 0 ] && EXIT=1
+exit "$EXIT"
