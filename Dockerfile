@@ -18,8 +18,7 @@ COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /opt/hermes-railway/entrypoint.sh
 RUN chmod +x /opt/hermes-railway/entrypoint.sh
 
-ENV HERMES_HOME=/data \
-    GATEWAY_HEALTH_URL=http://localhost:8642 \
+ENV GATEWAY_HEALTH_URL=http://localhost:8642 \
     PORT=8080
 
 EXPOSE 8080
