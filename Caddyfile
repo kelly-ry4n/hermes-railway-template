@@ -12,6 +12,8 @@
 		basic_auth {
 			{$DASHBOARD_USER} {$DASHBOARD_PASSWORD_HASH}
 		}
-		reverse_proxy 127.0.0.1:9119
+		reverse_proxy 127.0.0.1:9119 {
+			header_up Host 127.0.0.1:9119
+		}
 	}
 }
