@@ -1,4 +1,4 @@
-FROM nousresearch/hermes-agent:latest
+FROM nousresearch/hermes-agent:v2026.4.30
 
 ENV HERMES_HOME=/data \
     GATEWAY_HEALTH_URL=http://localhost:8642
