@@ -4,8 +4,14 @@
 }
 
 :{$PORT} {
-	basic_auth {
-		{$DASHBOARD_USER} {$DASHBOARD_PASSWORD_HASH}
+	handle /healthz {
+		respond "ok" 200
 	}
-	reverse_proxy 127.0.0.1:9119
+
+	handle {
+		basic_auth {
+			{$DASHBOARD_USER} {$DASHBOARD_PASSWORD_HASH}
+		}
+		reverse_proxy 127.0.0.1:9119
+	}
 }
