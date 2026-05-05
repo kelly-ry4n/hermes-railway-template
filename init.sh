@@ -9,6 +9,7 @@ HERMES_GID="${HERMES_GID:-10000}"
 # create and hand off /data/hermes before the upstream script drops
 # privileges.
 mkdir -p /data/hermes
-chown "$HERMES_UID:$HERMES_GID" /data /data/hermes
+chown "$HERMES_UID:$HERMES_GID" /data
+chown -R "$HERMES_UID:$HERMES_GID" /data/hermes
 
 exec /opt/hermes/docker/entrypoint.sh "$@"
